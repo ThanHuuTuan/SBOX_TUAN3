@@ -13,13 +13,13 @@ class User{
 		char *gender;
 		char *fullname;
 		char *address;
-		int flag ; //danh dau dang nhap
+		int flag ; 
 
 	public :
         User(){};
 		void Register();
         void LogIn();
-        bool isLogIn(); // kiem tra da dang nhap chua
+        bool isLogIn();
         void LogOut();
         bool Check(User u);
         void ShowMess(int);
