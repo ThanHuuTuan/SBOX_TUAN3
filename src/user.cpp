@@ -101,10 +101,10 @@ int ConnectSQlite::LoginSQL(sqlite3 *db,char *username, char *password){
         szSQL = "SELECT * FROM  user WHERE username = ? and password = ? ";
         rc = sqlite3_prepare(db, szSQL, strlen(szSQL), &stmt, &pzTest);
        if( rc == SQLITE_OK ) {
-            // bind the value
+            
             sqlite3_bind_text(stmt, 1, username, strlen(username), 0);
             sqlite3_bind_text(stmt, 2, password, strlen(password), 0);
-            // commit
+            
            while(sqlite3_step(stmt) == SQLITE_ROW) {
                 stringstream str;
                 str << sqlite3_column_text(stmt, 0);
@@ -162,7 +162,7 @@ void ConnectSQlite::WriteToFriend(sqlite3 *db,int id1, int id2){
      szSQL = "INSERT INTO friend VALUES (?,?,?)";
      rc = sqlite3_prepare_v2(db, szSQL, strlen(szSQL), &stmt, &pzTest);
      if( rc == SQLITE_OK ) {
-            // bind the value
+     
         int block = 0;
         sqlite3_bind_int(stmt,1,id1);
         sqlite3_bind_int(stmt,2,id2);
@@ -366,13 +366,13 @@ void ConnectSQlite::WriteToMess(sqlite3 *db,int id1, int id2,char *content,char 
          szSQL = "INSERT INTO message VALUES (?,?,?,?,?)";
          rc = sqlite3_prepare_v2(db, szSQL, strlen(szSQL), &stmt, &pzTest);
          if( rc == SQLITE_OK ) {
-                // bind the value
+                
             sqlite3_bind_int(stmt,1,id1);
             sqlite3_bind_int(stmt,2,id2);
             sqlite3_bind_text(stmt,3,content,strlen(content),0);
             sqlite3_bind_text(stmt,4,time,strlen(time),0);
             sqlite3_bind_text(stmt,5,title,strlen(title),0);
-            // commit
+            
             sqlite3_step(stmt);
             sqlite3_finalize(stmt);
 
@@ -380,7 +380,7 @@ void ConnectSQlite::WriteToMess(sqlite3 *db,int id1, int id2,char *content,char 
 
               fprintf(stderr, "SQL error: %s\n", zErrMsg);
               sqlite3_free(zErrMsg);
-              // break the loop if error occur
+              
           }
 
 }
@@ -399,10 +399,10 @@ void ConnectSQlite::SelectMessenger(sqlite3 *db, int id){
                 "(SELECT * FROM message where idsen = ? ) as A LEFT JOIN user ON A.idrec = user.id";
     rc = sqlite3_prepare_v2(db, szSQL, strlen(szSQL), &stmt, &pzTest);
     if( rc == SQLITE_OK ) {
-            // bind the value
+       
         sqlite3_bind_int(stmt,1,id);
 
-        // commit
+        
         while(sqlite3_step(stmt) == SQLITE_ROW) {
             answer.push_back(string((const char *) sqlite3_column_text(stmt, 0)));
         }
@@ -416,7 +416,7 @@ void ConnectSQlite::SelectMessenger(sqlite3 *db, int id){
 
           fprintf(stderr, "SQL error: %s\n", zErrMsg);
           sqlite3_free(zErrMsg);
-          // break the loop if error occur
+          
       }
 }
 void ConnectSQlite::ShowMessDetail(sqlite3 *db,int id1,int id2){
@@ -425,12 +425,12 @@ void ConnectSQlite::ShowMessDetail(sqlite3 *db,int id1,int id2){
     szSQL = "SELECT * FROM (SELECT * FROM message WHERE (idsen = ? OR idsen = ?) AND (idrec = ? OR idrec =?) ) AS B LEFT JOIN  user ON user.id = B.idsen";
     rc = sqlite3_prepare_v2(db, szSQL, strlen(szSQL), &stmt, &pzTest);
     if( rc == SQLITE_OK ) {
-            // bind the value
+            
         sqlite3_bind_int(stmt,1,id1);
         sqlite3_bind_int(stmt,2,id2);
         sqlite3_bind_int(stmt,3,id1);
         sqlite3_bind_int(stmt,4,id2);
-        // commit
+        
         while(sqlite3_step(stmt) == SQLITE_ROW) {
 
                 cout << " Send To: " << string((const char *) sqlite3_column_text(stmt, 5)) << "" <<  endl;
@@ -444,7 +444,7 @@ void ConnectSQlite::ShowMessDetail(sqlite3 *db,int id1,int id2){
 
           fprintf(stderr, "SQL error: %s\n", zErrMsg);
           sqlite3_free(zErrMsg);
-          // break the loop if error occur
+          
       }
 }
 void User::ShowMessDetail(int id1){
